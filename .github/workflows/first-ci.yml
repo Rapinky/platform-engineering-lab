@@ -1,0 +1,19 @@
+
+name: My First CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print a message
+        run: echo "Hello from my first CI pipeline!"
+
+      - name: Show the current date
+        run: date
