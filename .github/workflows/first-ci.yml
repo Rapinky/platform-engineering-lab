@@ -35,6 +35,9 @@ jobs:
 
       - name: Show the current date
         run: date
-
+      
       - name: Run calculator tests
-        run: node --test tests/calculator.test.mjs
+        run: npm test
+
+      - name: Build application
+        run: npm run build
