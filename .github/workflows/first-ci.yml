@@ -72,3 +72,32 @@ jobs:
           test -f dist/calculator.mjs
           node --check dist/calculator.mjs
           echo "Artifact validated successfully!"
+
+
+  prepare-release:
+    runs-on: ubuntu-latest
+    needs: verify-artifact
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download validated artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: calculator-build
+          path: dist/
+
+      - name: Prepare release package
+        run: |
+          mkdir -p release
+          cp dist/calculator.mjs release/
+          echo "Source commit: $GITHUB_SHA" > release/RELEASE_INFO.txt
+          echo "Release candidate prepared!"
+
+      - name: Upload release candidate
+        uses: actions/upload-artifact@v7
+        with:
+          name: calculator-release-candidate
+          path: release/
+          if-no-files-found: error
+          retention-days: 7
+
