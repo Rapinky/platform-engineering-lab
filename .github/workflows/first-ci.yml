@@ -123,3 +123,24 @@ jobs:
           echo "Staging deployment simulation successful!"
 
 
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: production
+
+    steps:
+      - name: Download approved release candidate
+        uses: actions/download-artifact@v7
+        with:
+          name: calculator-release-candidate
+          path: release/
+
+      - name: Simulate production deployment
+        run: |
+          test -f release/calculator.mjs
+          test -f release/RELEASE_INFO.txt
+          grep -F "Source commit: $GITHUB_SHA" release/RELEASE_INFO.txt
+          echo "Production deployment simulation successful!"
+          echo "No live infrastructure was modified."
+
