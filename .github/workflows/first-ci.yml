@@ -101,3 +101,25 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: prepare-release
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: staging
+
+    steps:
+      - name: Download release candidate
+        uses: actions/download-artifact@v7
+        with:
+          name: calculator-release-candidate
+          path: release/
+
+      - name: Simulate staging deployment
+        run: |
+          test -f release/calculator.mjs
+          test -f release/RELEASE_INFO.txt
+          grep -F "Source commit: $GITHUB_SHA" release/RELEASE_INFO.txt
+          echo "Staging deployment simulation successful!"
+
+
