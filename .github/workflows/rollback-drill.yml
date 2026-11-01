@@ -1,0 +1,42 @@
+
+name: Rollback Drill
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rollback-drill:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Simulate rollback
+        run: node scripts/simulate-rollback.mjs
+
+      - name: Validate recovery report
+        run: |
+          test -s recovery/rollback-result.json
+          node -e "const r = require('./recovery/rollback-result.json'); if (r.status !== 'rollback-simulated') process.exit(1)"
+
+      - name: Upload recovery report
+        uses: actions/upload-artifact@v7
+        with:
+          name: rollback-simulation-report
+          path: recovery/rollback-result.json
+          if-no-files-found: error
+          retention-days: 7

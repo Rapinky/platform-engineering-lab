@@ -1,0 +1,8 @@
+
+{
+  "environment": "production-simulation",
+  "release": "run-22",
+  "sourceCommit": "55e291d877091c888a94d0d588c0dbf2713c5098",
+  "artifact": "calculator-release-candidate",
+  "status": "verified"
+}

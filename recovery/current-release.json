@@ -1,0 +1,8 @@
+
+{
+  "environment": "production-simulation",
+  "release": "faulty-demo-v2",
+  "status": "failed",
+  "reason": "Simulated post-deployment health check failure",
+  "rollbackTarget": "run-22"
+}
