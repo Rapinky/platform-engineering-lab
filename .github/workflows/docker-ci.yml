@@ -1,4 +1,5 @@
 
+
 name: Docker CI
 
 on:
@@ -20,10 +21,24 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Build Docker image
+      - name: Build optimized image
         run: docker build -t calculator-lab:ci .
 
       - name: Run Docker container
         run: |
           docker run --rm calculator-lab:ci
           echo "Container completed successfully!"
+
+      - name: Compare Docker image sizes
+        run: |
+          git fetch --no-tags --depth=1 origin main
+          git show origin/main:Dockerfile > Dockerfile.baseline
+
+          docker build -f Dockerfile.baseline -t calculator-lab:baseline .
+
+          baseline=$(docker image inspect calculator-lab:baseline --format '{{.Size}}')
+          optimized=$(docker image inspect calculator-lab:ci --format '{{.Size}}')
+
+          echo "Original image: $baseline bytes"
+          echo "Optimized image: $optimized bytes"
+          echo "Difference: $((baseline - optimized)) bytes"
