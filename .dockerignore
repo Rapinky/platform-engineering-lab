@@ -1,0 +1,24 @@
+
+# Version control
+.git
+.github
+
+# Local dependencies and build outputs
+node_modules
+dist
+coverage
+
+# Environment and secret files
+.env
+.env.*
+*.pem
+*.key
+
+# Logs and temporary files
+*.log
+*.tmp
+.DS_Store
+
+# Files not needed for our calculator image
+README.md
+recovery
