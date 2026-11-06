@@ -47,5 +47,19 @@ jobs:
       - name: Inspect Linux networking
         run: bash scripts/linux-network.sh
 
+        
+      - name: Validate environment script syntax
+        run: bash -n scripts/env-check.sh
+
+      - name: Test default environment configuration
+        run: bash scripts/env-check.sh
+
+      - name: Test staging environment configuration
+        env:
+          APP_ENV: staging
+          APP_PORT: '8080'
+        run: bash scripts/env-check.sh
+
+
 
 
