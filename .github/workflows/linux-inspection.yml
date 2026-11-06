@@ -40,4 +40,12 @@ jobs:
       - name: Test Linux process management
         run: bash scripts/linux-processes.sh
 
+        
+      - name: Validate networking script syntax
+        run: bash -n scripts/linux-network.sh
+
+      - name: Inspect Linux networking
+        run: bash scripts/linux-network.sh
+
+
 
