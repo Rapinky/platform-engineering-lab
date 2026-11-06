@@ -60,6 +60,20 @@ jobs:
           APP_PORT: '8080'
         run: bash scripts/env-check.sh
 
+        
+      - name: Verify demo secret securely
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+        env:
+          DEMO_API_TOKEN: ${{ secrets.DEMO_API_TOKEN }}
+        run: |
+          if [[ -z "$DEMO_API_TOKEN" ]]; then
+            echo "ERROR: Demo secret is missing"
+            exit 1
+          fi
+
+          bash scripts/env-check.sh
+
+
 
 
 
