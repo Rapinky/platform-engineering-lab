@@ -1,0 +1,27 @@
+
+name: Linux Inspection
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Validate Bash syntax
+        run: bash -n scripts/linux-inspect.sh
+
+      - name: Inspect Linux environment
+        run: bash scripts/linux-inspect.sh
