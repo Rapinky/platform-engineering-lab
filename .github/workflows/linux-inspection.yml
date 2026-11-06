@@ -33,3 +33,11 @@ jobs:
       - name: Test Linux file permissions
         run: bash scripts/linux-permissions.sh
 
+        
+      - name: Validate process script syntax
+        run: bash -n scripts/linux-processes.sh
+
+      - name: Test Linux process management
+        run: bash scripts/linux-processes.sh
+
+
