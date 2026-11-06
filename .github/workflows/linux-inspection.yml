@@ -25,3 +25,11 @@ jobs:
 
       - name: Inspect Linux environment
         run: bash scripts/linux-inspect.sh
+
+        
+      - name: Validate permissions script syntax
+        run: bash -n scripts/linux-permissions.sh
+
+      - name: Test Linux file permissions
+        run: bash scripts/linux-permissions.sh
+
