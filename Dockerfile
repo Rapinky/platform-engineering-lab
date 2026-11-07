@@ -12,7 +12,6 @@ COPY scripts/ ./scripts/
 
 RUN npm test && npm run build
 
-fix: install monitoring test dependencies in Docker builder
 # Stage 2: Runtime
 FROM node:24-alpine AS runtime
 
