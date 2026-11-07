@@ -1,5 +1,4 @@
 
-
 name: Docker CI
 
 on:
@@ -31,14 +30,22 @@ jobs:
 
       - name: Compare Docker image sizes
         run: |
-          git fetch --no-tags --depth=1 origin main
-          git show origin/main:Dockerfile > Dockerfile.baseline
+          set -euo pipefail
 
-          docker build -f Dockerfile.baseline -t calculator-lab:baseline .
+          git fetch --no-tags --depth=1 origin main
+
+          baseline_dir="$(mktemp -d)"
+          trap 'rm -rf "$baseline_dir"' EXIT
+
+          git archive origin/main | tar -x -C "$baseline_dir"
+
+          docker build \
+            -t calculator-lab:baseline \
+            "$baseline_dir"
 
           baseline=$(docker image inspect calculator-lab:baseline --format '{{.Size}}')
           optimized=$(docker image inspect calculator-lab:ci --format '{{.Size}}')
 
-          echo "Original image: $baseline bytes"
-          echo "Optimized image: $optimized bytes"
+          echo "Main image: $baseline bytes"
+          echo "PR image: $optimized bytes"
           echo "Difference: $((baseline - optimized)) bytes"

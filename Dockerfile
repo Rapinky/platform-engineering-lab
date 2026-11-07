@@ -1,9 +1,10 @@
 
-
 # Stage 1: Build and test
 FROM node:24-alpine AS builder
 
 WORKDIR /app
+
+RUN apk add --no-cache bash curl
 
 COPY package.json ./
 COPY src/ ./src/
